@@ -60,7 +60,7 @@ while working_machine:
                 in_change = round(change(money, coffe_pick), 2)
                 if in_change >= 0:
                     print(f"Here is ${in_change} in change")
-                    print(f"Here is your {coffe_pick} ☕️ Enjoy!")
+                    print(f"Here is your {coffe_pick} ☕️  Enjoy!")
                     R_money += money - in_change
                     water_v -= MENU[coffe_pick]["ingredients"]["water"]
                     coffee -= MENU[coffe_pick]["ingredients"]["coffee"]
