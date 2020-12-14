@@ -1,5 +1,6 @@
 import pandas
 from tkinter import *
+from tkinter import messagebox
 
 data = pandas.read_csv("nato_phonetic_alphabet.csv")
 phonetic_dict = {row.letter: row.code for (index, row) in data.iterrows()}
@@ -8,9 +9,13 @@ phonetic_dict = {row.letter: row.code for (index, row) in data.iterrows()}
 
 def alphabet_to_NATO():
     word_normal = word_input.get().upper()
-    output_list = [phonetic_dict[letter] for letter in word_normal]
-    Nato_text = ', '.join(output_list)
-    nato_result.config(text=Nato_text)
+    try:
+        output_list = [phonetic_dict[letter] for letter in word_normal]
+    except KeyError:
+        messagebox.showinfo(title="Character Error", message="Please insert only Letters!")
+    else:
+        Nato_text = ', '.join(output_list)
+        nato_result.config(text=Nato_text)
 
 window = Tk()
 window.title("Nato alphabet converter")
