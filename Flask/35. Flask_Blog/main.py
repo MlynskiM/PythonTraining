@@ -1,22 +1,43 @@
-from flask import Flask, render_template
-import requests
+from flask import Flask, render_template, request
+import requests as rq
 import datetime as dt
+import smtplib
 
 app = Flask(__name__)
 
 API_ENDPOINT = "https://api.npoint.io/43644ec4f0013682fc0d"
 
-posts = requests.get(API_ENDPOINT).json()
+posts = rq.get(API_ENDPOINT).json()
 
 year = dt.datetime.now().strftime("%Y")
+
+
+my_email = "Email"
+password = "PASSWORD"
+
+
 
 @app.route('/')
 def home():
     return render_template('index.html', posts = posts , year = year)
 
-@app.route('/contact')
+@app.route('/contact', methods=["POST", "GET"])
 def contact_us():
-    return render_template('contact.html', posts = posts , year = year)
+    if request.method == 'POST':
+        data = request.form
+        
+
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(user = my_email, password=password)
+            connection.sendmail(
+                from_addr = my_email,
+                to_addrs= "RECIEVER ADRESS",
+                msg = f"Subject:Contact Form from {data['name']}\n\nPhone Number : {data['phonenumber']}\nEmail: {data['email']}\n\n{data['message']}"
+            )
+        return render_template('contact.html', title = "Successfully sent your message" , year = year)
+    else:
+        return render_template('contact.html', title = "Contact Me" , year = year)
 
 @app.route('/about')
 def about_me():
