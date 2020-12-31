@@ -1,13 +1,13 @@
 {% include "header.html" %}
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1470092306007-055b6797ca72?ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80')">
+  <header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1585079542156-2755d9c8a094?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="site-heading">
-            <h1>Mlynski-App Blog</h1>
+            <h1>Python Flask</h1>
             <span class="subheading">Blog treningowy</span>
           </div>
         </div>
@@ -21,7 +21,7 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         {% for post in posts %}
         <div class="post-preview">
-          <a href="{{ url_for('show_post', index=post.id) }}">
+          <a href="{{ url_for('show_post', post_id=post.id) }}">
             <h2 class="post-title">
               {{post.title}}
             </h2>
@@ -30,17 +30,22 @@
             </h3>
           </a>
           <p class="post-meta">Posted by
-            <a href="#">{{post.author}}</a>
-            on {{post.date}}</p><a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
+            {{post.author.name}}
+            on {{post.date}}
+            {% if current_user.id == 1: %}
+            <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
+            {% endif %}
+          </p>
         </div>
-        <hr>
         {% endfor %}
 
 
         <!-- New Post -->
+        {% if current_user.id == 1: %}
         <div class="clearfix">
-          <a class="btn btn-primary float-right" href="{{ url_for('new_post') }}">Create New Post</a>
+          <a class="btn btn-primary float-right" href="{{url_for('new_post')}}">Create New Post</a>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
